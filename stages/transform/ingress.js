@@ -3,14 +3,16 @@ const { io, log } = require("lastejobb");
 const seen = {};
 
 const ingress = io.lesDatafil("ingress");
-const r = {};
-Object.keys(ingress).forEach(key => (r[key] = cleanup(ingress[key])));
-io.skrivBuildfil(__filename, r);
+Object.keys(ingress).forEach(key => cleanup(key));
+io.skrivBuildfil(__filename, ingress);
 
-function cleanup(e) {
+function cleanup(key) {
+  const e = ingress[key];
   clean(e, "ingress");
   clean(e, "brødtekst");
-  return e;
+  if (Object.keys(e).length <= 0) {
+    delete ingress[key];
+  }
 }
 
 function clean(e, key) {
@@ -21,10 +23,13 @@ function clean(e, key) {
     const tekst = stripHtml(html);
     const gyldigTekst = filtrer(tekst);
     if (gyldigTekst) item[key] = gyldigTekst;
+    else delete item[key];
   });
+  if (Object.keys(item).length <= 0) delete e[key];
 }
 
 function filtrer(tekst) {
+  if (tekst.indexOf("<p>") >= 0) debugger;
   const ban = [
     "Informasjon hentet fra Bondens kulturmarksflora for Midt-Norge."
   ];
