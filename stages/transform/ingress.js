@@ -2,10 +2,7 @@ const { io } = require("lastejobb");
 
 const ingress = io.lesDatafil("tekst");
 const r = {};
-
-Object.keys(ingress).forEach(key => {
-  r[key] = cleanup(ingress[key]);
-});
+Object.keys(ingress).forEach(key => (r[key] = cleanup(ingress[key])));
 io.skrivBuildfil(__filename, r);
 
 function cleanup(e) {

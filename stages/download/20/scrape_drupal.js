@@ -40,7 +40,6 @@ function mapDescription(kode, desc) {
   desc.forEach(d => {
     map(kode, d, "Intro", "ingress");
     map(kode, d, "Body", "brødtekst");
-    if (!r[kode]) r[kode] = {};
   });
 }
 
