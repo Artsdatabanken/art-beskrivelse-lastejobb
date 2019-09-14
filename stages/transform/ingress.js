@@ -1,6 +1,8 @@
-const { io } = require("lastejobb");
+const { io, log } = require("lastejobb");
 
-const ingress = io.lesDatafil("tekst");
+const seen = {};
+
+const ingress = io.lesDatafil("ingress");
 const r = {};
 Object.keys(ingress).forEach(key => (r[key] = cleanup(ingress[key])));
 io.skrivBuildfil(__filename, r);
@@ -15,9 +17,21 @@ function clean(e, key) {
   const item = e[key];
   if (!item) return;
   Object.keys(item).forEach(key => {
-    const v = item[key];
-    item[key] = stripHtml(v);
+    let html = item[key];
+    const tekst = stripHtml(html);
+    const gyldigTekst = filtrer(tekst);
+    if (gyldigTekst) item[key] = gyldigTekst;
   });
+}
+
+function filtrer(tekst) {
+  const ban = [
+    "Informasjon hentet fra Bondens kulturmarksflora for Midt-Norge."
+  ];
+  for (var stop of ban) if (tekst === stop) return null;
+  if (seen[tekst]) log.warn("Duplikat tekst: " + tekst);
+  seen[tekst] = true;
+  return tekst;
 }
 
 function stripHtml(v) {

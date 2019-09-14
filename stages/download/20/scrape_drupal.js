@@ -1,13 +1,16 @@
-const { io } = require("lastejobb");
+const { io, log } = require("lastejobb");
 const fetch = require("node-fetch");
 
 const r = {};
 const typer = io.lesDatafil("art-kode/type").items;
 
+log.info("Laster ned tekster...");
 const MAX_THREADS = 5;
 for (let i = 0; i < MAX_THREADS; i++) downloadNext();
 
 async function downloadNext() {
+  if (typer.length % 10000 === 0) log.info(typer.length + " arter gjenstår...");
+
   const item = typer.pop();
   if (!item) {
     io.skrivDatafil("ingress", r);
