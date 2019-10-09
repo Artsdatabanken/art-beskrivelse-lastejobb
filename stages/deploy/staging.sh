@@ -1,3 +1,3 @@
 set -e
 
-scp build/beskrivelse.json grunnkart@hydra:~/tilesdata/Biota/
+scp build/type.json grunnkart@hydra:~/tilesdata/Biota/beskrivelse.json
