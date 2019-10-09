@@ -13,10 +13,17 @@ async function downloadNext() {
 
   const item = typer.pop();
   if (!item) {
-    io.skrivDatafil("ingress", r);
+    io.skrivDatafil("beskrivelse", r);
     return;
   }
-  download(item).then(r => downloadNext());
+  download(item)
+    .then(r => downloadNext())
+    .catch(err => {
+      log.error(err);
+      log.info("Adding " + item.kode + " to retry list..");
+      typer.push(item);
+      downloadNext();
+    });
 }
 
 async function download(type) {
