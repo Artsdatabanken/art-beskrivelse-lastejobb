@@ -2,16 +2,16 @@ const { io, log } = require("lastejobb");
 
 const seen = {};
 
-const ingress = io.lesDatafil("ingress");
-Object.keys(ingress).forEach(key => cleanup(key));
-io.skrivBuildfil(__filename, ingress);
+const beskrivelser = io.lesDatafil("beskrivelse");
+Object.keys(beskrivelser).forEach(key => cleanup(key));
+io.skrivBuildfil(__filename, beskrivelser);
 
 function cleanup(key) {
-  const e = ingress[key];
-  clean(e, "ingress");
+  const e = beskrivelser[key];
+  clean(e, "beskrivelse");
   clean(e, "brødtekst");
   if (Object.keys(e).length <= 0) {
-    delete ingress[key];
+    delete beskrivelser[key];
   }
 }
 
