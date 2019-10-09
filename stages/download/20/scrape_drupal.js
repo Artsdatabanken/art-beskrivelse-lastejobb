@@ -41,7 +41,7 @@ async function download2(url, kode) {
 
 function mapDescription(kode, desc) {
   desc.forEach(d => {
-    map(kode, d, "Intro", "ingress");
+    map(kode, d, "Intro", "beskrivelse");
     map(kode, d, "Body", "brødtekst");
   });
 }
