@@ -45,5 +45,7 @@ function stripHtml(v) {
   v = v.replace(/\<\/?p\>/g, "");
   v = v.replace(/\<a href=\"(.*?)\">.*<\/a>/g, "$1");
   v = v.replace(/\n/g, "");
+  v = v.replace(/”/g, '"');
+  v = v.replace(/”/g, '"');
   return v.trim();
 }
