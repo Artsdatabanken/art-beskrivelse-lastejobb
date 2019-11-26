@@ -1,4 +1,4 @@
-const { io, log } = require("lastejobb");
+const { io, json, log, text } = require("lastejobb");
 
 const seen = {};
 
@@ -18,9 +18,11 @@ function cleanup(key) {
 function clean(e, key) {
   const item = e[key];
   if (!item) return;
+  json.moveKey(item, "nb", "nob");
+  json.moveKey(item, "en", "eng");
   Object.keys(item).forEach(key => {
     let html = item[key];
-    const tekst = stripHtml(html);
+    const tekst = text.decode(html);
     const gyldigTekst = filtrer(tekst);
     if (gyldigTekst) item[key] = gyldigTekst;
     else delete item[key];
@@ -37,15 +39,4 @@ function filtrer(tekst) {
   if (seen[tekst]) log.warn("Duplikat tekst: " + tekst);
   seen[tekst] = true;
   return tekst;
-}
-
-function stripHtml(v) {
-  v = v.replace(/\<\/?em\>/g, "");
-  v = v.replace(/\<\/?strong\>/g, "");
-  v = v.replace(/\<\/?p\>/g, "");
-  v = v.replace(/\<a href=\"(.*?)\">.*<\/a>/g, "$1");
-  v = v.replace(/\n/g, "");
-  v = v.replace(/”/g, '"');
-  v = v.replace(/”/g, '"');
-  return v.trim();
 }
